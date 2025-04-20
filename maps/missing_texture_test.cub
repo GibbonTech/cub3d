@@ -1,0 +1,15 @@
+NO ./textures/wallmonkey.png
+SO ./textures/wallmonkey.png
+WE ./textures/wallmonkey.png
+EA ./nonexistent_texture.png
+
+F 70,70,80
+C 30,30,30
+
+1111111
+1000001
+1000001
+100N001
+1000001
+1000001
+1111111
