@@ -526,6 +526,8 @@ Here's a step-by-step breakdown of how the program executes, function by functio
 
 ### 3. Data Initialization
 
+s
+
 `init_data()` in `src/initialization/init_data.c`
 -> Sets up the data structure with default values
 -> ELI5: Setting up your game board before playing
