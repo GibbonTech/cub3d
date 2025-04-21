@@ -48,159 +48,220 @@ src/
 └── utils/          # Utility functions
 ```
 
-## Core Components
+## Complete File Breakdown
 
-### Parsing
+Here's a detailed explanation of every file in the project, what it does, and why it's needed:
 
-**Location**: `src/parsing/`
+### Core Module (`src/core/`)
 
-The parsing module handles reading and validating the configuration file (.cub). It ensures that all required elements are present and correctly formatted.
+- **main.c**: The entry point of the program
+  - What it does: Initializes the program, parses arguments, sets up the game, and starts the main loop
+  - Why it's needed: Every C program needs a main function to start execution
+  - ELI5: The starting point of the game, like turning on a video game console
 
-#### Key Files:
+### Initialization Module (`src/initialization/`)
 
-- **parsing.c**: Main parsing functions
-  - `parse_file()`: Entry point for parsing the configuration file
-  - `check_file_extension()`: Validates the file has a .cub extension
+- **init_data.c**: Sets up the game data structure
+  - What it does: Initializes all variables with default values
+  - Why it's needed: Ensures all data is properly initialized before use
+  - ELI5: Setting up all the game pieces before you start playing
 
-- **parsing_identifiers.c**: Handles texture and color identifiers
-  - `process_texture_identifier()`: Processes NO, SO, WE, EA texture paths
-  - `process_color_identifier()`: Processes F (floor) and C (ceiling) colors
+- **init_window.c**: Creates the game window
+  - What it does: Initializes the MLX window and images
+  - Why it's needed: Creates the visual interface for the game
+  - ELI5: Opening a window so you can see the game world
 
-- **parsing_map.c**: Handles map parsing
-  - `parse_map()`: Parses the map section of the configuration file
-  - `validate_map()`: Ensures the map is valid (enclosed by walls, single player)
+### Input Module (`src/input/`)
 
-- **parsing_textures.c**: Handles texture loading
-  - `set_textures()`: Loads textures from the specified paths
-  - `load_wall_textures()`: Loads the wall textures
+- **event_handler.c**: Main input handling
+  - What it does: Sets up input hooks and processes input events
+  - Why it's needed: Connects user input to game actions
+  - ELI5: Listens for when you press buttons on your keyboard
 
-**How It Works (ELI5)**:
-The parsing module reads the configuration file line by line, like reading a recipe. First, it checks if the file has the right extension (.cub). Then it looks for specific ingredients: texture paths (NO, SO, WE, EA), colors (F, C), and the map layout. It makes sure all ingredients are present and correctly formatted. For the map, it ensures it's enclosed by walls (like making sure a puzzle has all its edge pieces) and has exactly one player starting position.
+- **event_handler_keys.c**: Keyboard input processing
+  - What it does: Handles specific key presses like ESC and movement keys
+  - Why it's needed: Processes keyboard commands
+  - ELI5: Understands what to do when you press different keys
 
-### Initialization
+- **event_handler_mouse.c**: Mouse input processing
+  - What it does: Handles mouse movement for camera control
+  - Why it's needed: Allows looking around with the mouse
+  - ELI5: Lets you look around by moving your mouse
 
-**Location**: `src/initialization/`
-
-The initialization module sets up the game environment, including the window, images, and data structures.
-
-#### Key Files:
-
-- **init_data.c**: Initializes the game data
-  - `init_data()`: Sets up the data structure with default values
-
-- **init_window.c**: Sets up the game window
-  - `init_window()`: Creates the window and initializes MLX
-
-**How It Works (ELI5)**:
-The initialization module is like setting up a board game before you start playing. It prepares the game board (window), places all the pieces in their starting positions, and makes sure everything is ready to go. It creates the window where you'll see the game, initializes the player's position and direction, and sets up the structures needed to store game information.
-
-### Raycasting
-
-**Location**: `src/raycasting/`
-
-The raycasting module implements the core rendering algorithm that creates the 3D perspective.
-
-#### Key Files:
-
-- **raycasting.c**: Core raycasting functions
-  - `render_frame()`: Main function that renders a frame
-  - `get_step_for_check()`: Calculates the step direction for the DDA algorithm
-  - `calc_side_dist()`: Calculates the distance to the next grid line
-  - `ft_dda()`: Implements the Digital Differential Analysis algorithm
-  - `ft_lineheight()`: Calculates the height of the wall on screen
-
-- **raycasting_draw.c**: Functions for drawing walls
-  - `draw_wall()`: Draws a textured wall slice
-  - `draw_ceiling()`: Draws the ceiling
-  - `draw_floor()`: Draws the floor
-
-- **raycasting_textures.c**: Texture handling for walls
-  - `get_texture_number()`: Determines which texture to use based on wall orientation
-  - `prepare_texture_drawing()`: Sets up texture coordinates
-
-- **raycasting_floor.c**: Floor rendering
-  - `draw_floor_section()`: Draws the floor with textures
-
-**How It Works (ELI5)**:
-The raycasting module is like a painter who draws what you see in the game. For each vertical strip of your screen, it shoots an imaginary line (ray) from your position in the direction you're looking. When this line hits a wall, it measures how far away the wall is. Closer walls are drawn taller, and farther walls are drawn shorter, creating the illusion of 3D. It also figures out which part of the wall texture to use, making the walls look realistic.
-
-### Input Handling
-
-**Location**: `src/input/`
-
-The input module manages user interactions, including keyboard and mouse input.
-
-#### Key Files:
-
-- **event_handler.c**: Main event handling
-  - `handle_key_press()`: Handles key press events
-  - `check_keys()`: Continuously checks for pressed keys
-
-- **event_handler_movement.c**: Player movement
-  - `move_player()`: Moves the player forward/backward
-  - `strafe_player()`: Moves the player left/right
-  - `rotate_player()`: Rotates the player's view
+- **event_handler_movement.c**: Player movement logic
+  - What it does: Implements forward/backward movement and rotation
+  - Why it's needed: Translates input into player movement
+  - ELI5: Makes your character move when you press WASD or arrow keys
 
 - **event_handler_position.c**: Position validation
-  - `is_valid_position()`: Checks if a position is valid (not inside a wall)
+  - What it does: Checks if player can move to a position
+  - Why it's needed: Prevents walking through walls
+  - ELI5: Makes sure you can't walk through walls
 
-- **event_handler_mouse.c**: Mouse input
-  - `mouse_handler()`: Handles mouse movement for camera control
+- **event_handler_position_utils.c**: Helper functions for position checking
+  - What it does: Additional functions for collision detection
+  - Why it's needed: Provides more detailed collision checks
+  - ELI5: Extra checks to make sure you don't get stuck in walls
 
-**How It Works (ELI5)**:
-The input module is like the game's ears and hands. It listens for when you press keys or move the mouse, and then makes the game respond appropriately. When you press W, it moves you forward; S moves you backward; A and D move you sideways; and the arrow keys rotate your view. It also makes sure you can't walk through walls by checking if your new position would be inside a wall before moving you there.
+### Parsing Module (`src/parsing/`)
 
-### Rendering
+- **parsing.c**: Main parsing functions
+  - What it does: Coordinates the parsing of the configuration file
+  - Why it's needed: Entry point for file parsing
+  - ELI5: Reads the instructions for how to set up the game
 
-**Location**: `src/rendering/`
+- **parsing_identifiers.c**: Processes texture and color identifiers
+  - What it does: Parses NO, SO, WE, EA texture paths and F, C colors
+  - Why it's needed: Extracts texture paths and colors from config
+  - ELI5: Finds where the wall pictures are stored and what colors to use
 
-The rendering module handles drawing graphics to the screen, including special elements like the gun.
+- **parsing_identifiers_utils.c**: Helper functions for identifier parsing
+  - What it does: Additional functions for processing identifiers
+  - Why it's needed: Simplifies the main identifier parsing code
+  - ELI5: Extra tools to help understand the game instructions
 
-#### Key Files:
+- **parsing_map.c**: Map parsing
+  - What it does: Parses the map section of the configuration file
+  - Why it's needed: Creates the game map from the config file
+  - ELI5: Reads the maze layout from the instructions
 
-- **gun_init.c**: Initializes the gun graphics
-  - `init_gun()`: Sets up the gun image
+- **parsing_map_utils.c**: Basic map parsing utilities
+  - What it does: Helper functions for map parsing
+  - Why it's needed: Simplifies the main map parsing code
+  - ELI5: Tools that help understand the maze layout
 
-- **gun_simple.c**: Draws the gun on screen
-  - `draw_gun()`: Renders the gun at the bottom of the screen
+- **parsing_map_utils2.c**: Additional map parsing utilities
+  - What it does: More helper functions for map parsing
+  - Why it's needed: Handles specific aspects of map parsing
+  - ELI5: More tools to help understand the maze layout
 
-**How It Works (ELI5)**:
-The rendering module is like an artist who draws everything you see in the game. It takes care of drawing special elements like the gun at the bottom of the screen. It loads the gun image and places it in the right position, making it look like you're holding a weapon as you explore the maze.
+- **parsing_map_utils3.c**: More map parsing utilities
+  - What it does: Even more helper functions for map parsing
+  - Why it's needed: Handles complex map parsing tasks
+  - ELI5: Advanced tools for understanding complicated maze layouts
 
-### Minimap
+- **parsing_map_utils4.c**: Final map parsing utilities
+  - What it does: Final set of helper functions for map parsing
+  - Why it's needed: Completes the map parsing functionality
+  - ELI5: The last set of tools needed to fully understand the maze
 
-**Location**: `src/minimap/`
+- **parsing_map_validation.c**: Map validation
+  - What it does: Validates that the map is properly formed
+  - Why it's needed: Ensures the map is playable
+  - ELI5: Checks that the maze doesn't have any holes or mistakes
 
-The minimap module implements a top-down view of the map to help with navigation.
+- **parsing_map_validation_utils.c**: Map validation helpers
+  - What it does: Helper functions for map validation
+  - Why it's needed: Simplifies the main validation code
+  - ELI5: Extra checks to make sure the maze is built correctly
 
-#### Key Files:
+- **parsing_textures.c**: Texture loading
+  - What it does: Loads textures from the specified paths
+  - Why it's needed: Prepares textures for rendering
+  - ELI5: Gets the wall pictures ready to be shown in the game
 
-- **draw_map_2d_1.c** through **draw_map_2d_8.c**: Minimap rendering
-  - `draw_map_2d()`: Main function to draw the minimap
-  - `init_minimap()`: Sets up the minimap parameters
-  - `draw_player_on_minimap()`: Shows the player's position on the minimap
-  - `draw_map_grid()`: Draws the map grid
+- **parsing_utils.c**: General parsing utilities
+  - What it does: General helper functions for parsing
+  - Why it's needed: Common functionality used across parsing
+  - ELI5: Basic tools used throughout the instruction-reading process
 
-**How It Works (ELI5)**:
-The minimap module is like having a small map in the corner of your screen. It shows a bird's-eye view of the maze, with your position marked. This helps you navigate and understand where you are in the maze. It draws walls as one color, empty spaces as another, and shows your position and direction with a different color or shape.
+### Raycasting Module (`src/raycasting/`)
 
-### Utilities
+- **raycasting.c**: Core raycasting algorithm
+  - What it does: Implements the main raycasting logic
+  - Why it's needed: Creates the 3D perspective from 2D map
+  - ELI5: Figures out what walls you can see and how far away they are
 
-**Location**: `src/utils/`
+- **raycasting_draw.c**: Drawing functions
+  - What it does: Functions for drawing walls, floor, ceiling
+  - Why it's needed: Renders the visual elements
+  - ELI5: Draws what you see on the screen
 
-The utilities module provides helper functions used throughout the code.
+- **raycasting_floor.c**: Floor rendering
+  - What it does: Specialized rendering for floors
+  - Why it's needed: Creates realistic floor appearance
+  - ELI5: Draws the floor you're walking on
 
-#### Key Files:
+- **raycasting_floor_utils.c**: Floor rendering helpers
+  - What it does: Helper functions for floor rendering
+  - Why it's needed: Simplifies floor rendering code
+  - ELI5: Extra tools to make the floor look good
 
-- **cleanup.c**: Memory management
-  - `clean_exit()`: Frees resources and exits the program
-  - `free_textures()`: Frees texture memory
+- **raycasting_render.c**: Frame rendering
+  - What it does: Coordinates the rendering of a complete frame
+  - Why it's needed: Manages the overall rendering process
+  - ELI5: Puts together all the parts of what you see
 
-- **get_next_line.c**: File reading
-  - `get_next_line()`: Reads a line from a file descriptor
+- **raycasting_sections.c**: Wall section rendering
+  - What it does: Renders different sections of walls
+  - Why it's needed: Handles the details of wall rendering
+  - ELI5: Draws different parts of walls with the right pictures
 
-**How It Works (ELI5)**:
-The utilities module is like a toolbox with useful tools that other parts of the game can use. It includes functions for reading files line by line (like reading a book one line at a time) and for cleaning up when the game ends (like putting away toys when you're done playing). These tools help keep the code organized and prevent memory leaks.
+- **raycasting_textures.c**: Texture application
+  - What it does: Applies textures to walls
+  - Why it's needed: Makes walls look realistic
+  - ELI5: Puts the right pictures on each wall
+
+- **raycasting_texture_utils.c**: Texture utilities
+  - What it does: Helper functions for texture handling
+  - Why it's needed: Simplifies texture application
+  - ELI5: Tools that help put pictures on walls correctly
+
+- **raycasting_utils.c**: General raycasting utilities
+  - What it does: Helper functions for raycasting
+  - Why it's needed: Common functionality for raycasting
+  - ELI5: Basic tools used throughout the wall-finding process
+
+### Rendering Module (`src/rendering/`)
+
+- **gun_init.c**: Gun initialization
+  - What it does: Sets up the gun graphics
+  - Why it's needed: Prepares the gun for display
+  - ELI5: Gets the gun picture ready to show
+
+- **gun_simple.c**: Gun rendering
+  - What it does: Draws the gun on screen
+  - Why it's needed: Shows the gun in the game
+  - ELI5: Draws the gun at the bottom of your screen
+
+- **gun_utils.c**: Gun utilities
+  - What it does: Helper functions for gun rendering
+  - Why it's needed: Simplifies gun rendering code
+  - ELI5: Extra tools to make the gun look good
+
+### Minimap Module (`src/minimap/`)
+
+- **draw_map_2d_1.c**: Main minimap functions
+  - What it does: Core functions for minimap rendering
+  - Why it's needed: Initializes and coordinates minimap drawing
+  - ELI5: Starts drawing the small map in the corner
+
+- **draw_map_2d_2.c** through **draw_map_2d_8.c**: Additional minimap functions
+  - What it does: Various aspects of minimap rendering
+  - Why it's needed: Completes the minimap functionality
+  - ELI5: Draws different parts of the small map (walls, player, etc.)
+
+### Utilities Module (`src/utils/`)
+
+- **cleanup.c**: Resource cleanup
+  - What it does: Frees allocated memory and resources
+  - Why it's needed: Prevents memory leaks
+  - ELI5: Cleans up all the toys when you're done playing
+
+- **cleanup_utils.c**: Cleanup helpers
+  - What it does: Helper functions for cleanup
+  - Why it's needed: Simplifies cleanup code
+  - ELI5: Extra tools to make sure everything is cleaned up properly
+
+- **get_next_line.c**: Line reading
+  - What it does: Reads a line from a file descriptor
+  - Why it's needed: Used for reading configuration files
+  - ELI5: Reads one line at a time from the instruction book
+
+- **get_next_line_utils.c** and **get_next_line_utils2.c**: Line reading helpers
+  - What it does: Helper functions for line reading
+  - Why it's needed: Simplifies line reading code
+  - ELI5: Extra tools to help read the instruction book
 
 ## How Raycasting Works
 

@@ -38,9 +38,6 @@ static void	create_minimap_image(t_data *data)
 	mlx_image_to_window(data->mlx, data->minimap, 10, 10);
 }
 
-/*
- * Initialize the game window and all required images
- */
 void	init_window(t_data *data)
 {
 	data->window_width = WINDOW_W;

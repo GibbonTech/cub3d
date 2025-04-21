@@ -19,9 +19,6 @@ void	error_msg_exit(char *msg, t_data *data)
 	clean_exit(data, 1);
 }
 
-/*
- * Initialize all data structures to default values
- */
 void	init_data(t_data *data)
 {
 	ft_memset(data, 0, sizeof(t_data));
